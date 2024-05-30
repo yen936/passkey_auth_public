@@ -1,0 +1,44 @@
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:alg="urn:oasis:names:tc:SAML:metadata:algsupport" ID="_6527bb23-ca83-46c6-a461-2ab58649f5e7" entityID="urn:federation:MicrosoftOnline">
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<Reference URI="#_6527bb23-ca83-46c6-a461-2ab58649f5e7">
+<Transforms>
+<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+</Transforms>
+<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<DigestValue>IWlpUVftJ1y0g73di+9mxcBsKzE=</DigestValue>
+</Reference>
+</SignedInfo>
+<SignatureValue>sJmy0qx/oQaO9x0jqn07kfij8Ko6OWwLr5fq80DT6BCAUUiWA1EQVDoILOR6TnqXBdTQleEk8L4ke8c45Fp7B01tZRZjXjgf1ZKIzzEHiFv63Ub5zcamWfVM4CpP0vwFlAYREF2u5i0JhXzq8FfZVrZZymugXMmWAm4Ecw6+H0MVRLk9scY678ocr2gdkBHizqh5qFsmiB8v0MeXPSUIWz3OrvpD1w7Y/nIAi0SxxFZNuRzHdJfZBeSQsHEdKvNnlbvb19/StZ2evOF9140dlOdt4YZsU4tA1O3LRNOs5Y7NV2040SuVYI7o0t39nKE56t6Tr+QfvqsoSo97FODaAQ==</SignatureValue>
+<KeyInfo>
+<X509Data>
+<X509Certificate>MIIC9jCCAd6gAwIBAgIJAKQ96FDw4zyOMA0GCSqGSIb3DQEBCwUAMCkxJzAlBgNVBAMTHkxpdmUgSUQgU1RTIFNpZ25pbmcgUHVibGljIEtleTAeFw0yMzA3MTYxODU1NTVaFw0yODA3MTYxODU1NTVaMCkxJzAlBgNVBAMTHkxpdmUgSUQgU1RTIFNpZ25pbmcgUHVibGljIEtleTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALtm2+vZtNrL+2zAKVchYm14OpGgUlMoo2chdtpIrR8GMFZV36u+Y6/w9pgqmxiYcs4BoeByfSJpk/uQT+nAo+Xjx9fHPlL9iEZnSZSq/bxUHLdObFGyfTaWMWlpLB23hFFVCacpACFJ0qPUPyDRABc2PHuN6fuR6dTamst5wrbJzollDQnUtQKxg7UqqYpM01t7kApm5vGq0SME6g5atEXz2ipDY4g/CSEfNmCiiv90gZ+JbnA0O8RKf740l3HHQx4vyVogeyOdIeicibobKunlt9dHBhxJ4bHY26cRD+K+vFkD/o5OoROhr4u4kxRRpNKl82X58bW50SOW2TpT1oUCAwEAAaMhMB8wHQYDVR0OBBYEFG8M5pHShE1oYsZUvfRS9+hR9+xCMA0GCSqGSIb3DQEBCwUAA4IBAQBNE6JD5YikgyhJtJ2ebaOPEqO+5Ea9EkJNcdehUPa7fkeVnW//jnDW4ETHf0o+ZE63vI5+7BHoTJkgyKoeUMQjVRn+bueH81nUdGjuflYlIxENTqW36wsAeqYkLGoy+tVUN9cPNtfjuEH3HkKmf+o+IPmUtPU1paUhMzTTD5FllDyeQCeIMibJVzcT7eW4u1QahUdK3YOoOL7TQK2IiEpJ1vnDqxNGY3m+FinsnO9W3lMlQYRMy+VzaDSm43gyIud92B5/YtqjcWZa8PXjNsjmErDvT4fPqiM/zn8BzRr0TSTeG11EWMgyioGSH9y+5OSoZmo2622sm8jxbAVm+BSJ</X509Certificate>
+</X509Data>
+</KeyInfo>
+</Signature>
+<SPSSODescriptor WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+<KeyDescriptor use="signing">
+<KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+<X509Data>
+<X509Certificate>MIIC9jCCAd6gAwIBAgIJAKQ96FDw4zyOMA0GCSqGSIb3DQEBCwUAMCkxJzAlBgNVBAMTHkxpdmUgSUQgU1RTIFNpZ25pbmcgUHVibGljIEtleTAeFw0yMzA3MTYxODU1NTVaFw0yODA3MTYxODU1NTVaMCkxJzAlBgNVBAMTHkxpdmUgSUQgU1RTIFNpZ25pbmcgUHVibGljIEtleTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALtm2+vZtNrL+2zAKVchYm14OpGgUlMoo2chdtpIrR8GMFZV36u+Y6/w9pgqmxiYcs4BoeByfSJpk/uQT+nAo+Xjx9fHPlL9iEZnSZSq/bxUHLdObFGyfTaWMWlpLB23hFFVCacpACFJ0qPUPyDRABc2PHuN6fuR6dTamst5wrbJzollDQnUtQKxg7UqqYpM01t7kApm5vGq0SME6g5atEXz2ipDY4g/CSEfNmCiiv90gZ+JbnA0O8RKf740l3HHQx4vyVogeyOdIeicibobKunlt9dHBhxJ4bHY26cRD+K+vFkD/o5OoROhr4u4kxRRpNKl82X58bW50SOW2TpT1oUCAwEAAaMhMB8wHQYDVR0OBBYEFG8M5pHShE1oYsZUvfRS9+hR9+xCMA0GCSqGSIb3DQEBCwUAA4IBAQBNE6JD5YikgyhJtJ2ebaOPEqO+5Ea9EkJNcdehUPa7fkeVnW//jnDW4ETHf0o+ZE63vI5+7BHoTJkgyKoeUMQjVRn+bueH81nUdGjuflYlIxENTqW36wsAeqYkLGoy+tVUN9cPNtfjuEH3HkKmf+o+IPmUtPU1paUhMzTTD5FllDyeQCeIMibJVzcT7eW4u1QahUdK3YOoOL7TQK2IiEpJ1vnDqxNGY3m+FinsnO9W3lMlQYRMy+VzaDSm43gyIud92B5/YtqjcWZa8PXjNsjmErDvT4fPqiM/zn8BzRr0TSTeG11EWMgyioGSH9y+5OSoZmo2622sm8jxbAVm+BSJ</X509Certificate>
+</X509Data>
+</KeyInfo>
+</KeyDescriptor>
+<SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://login.microsoftonline.com/login.srf"/>
+<NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
+<NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+<NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
+<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+<NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</NameIDFormat>
+<AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://login.microsoftonline.com/login.srf" index="0" isDefault="true"/>
+<AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://login.microsoftonline.com/login.srf" index="1"/>
+<AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:PAOS" Location="https://login.microsoftonline.com/login.srf" index="2"/>
+</SPSSODescriptor>
+<Extensions>
+<alg:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<alg:SigningMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+</Extensions>
+</EntityDescriptor>

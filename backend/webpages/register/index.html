@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Activation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        * {
+            font-family: 'Open Sans';
+        }
+
+        #popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #popup-container img {
+            width: 32px;
+            height: 32px;
+        }
+
+        #popup-container p {
+            margin-top: 10px;
+        }
+
+        #qrcode-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            max-width: 220px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #qrcode-label {
+            font-size: 16px;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            text-align: center;
+            color: #888888;
+        }
+
+        #qrcode {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="qrcode-container" style="display:none; margin: 0 auto; 
+                justify-content: center; align-items: center;">
+        <label id="qrcode-label">Scan to Get Keys</label>
+        <div id="qrcode" style="margin: 0 auto; justify-content: center;"></div>
+    </div>
+
+    <div id="popup-container" style="visibility:hidden;">
+        <svg id="success-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill=#81c784
+            class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </svg>
+
+        <svg id="failure-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill=#e57373
+            class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+        </svg>
+        <p id="popup-message"></p>
+    </div>
+        <script>
+            function showPopup(isSuccess) {
+                var popupContainer = document.getElementById("popup-container");
+                var failIcon = document.getElementById("failure-icon");
+                var successIcon = document.getElementById("success-icon");
+                var popupMessage = document.getElementById("popup-message");
+
+                // Set the icon and message based on success or failure
+                if (isSuccess) {
+                    popupMessage.textContent = "Account Activated Successful!";
+                    failIcon.style.visibility = "hidden";
+                    successIcon.style.visibility = "visible";
+                } else {
+                    popupMessage.textContent = "Account Activattion Failed: Please try again.";
+                    failIcon.style.visibility = "visible";
+                    successIcon.style.visibility = "hidden";
+                }
+
+                // Show the popup
+                popupContainer.style.visibility = "visible";
+
+                // Set a timeout to hide the popup after 3 seconds
+                setTimeout(function () {
+                    popupContainer.style.visibility = "hidden";
+                    failIcon.style.visibility = "hidden";
+                    successIcon.style.visibility = "hidden";
+                    // $('#qrcode-container').fadeOut();
+                }, 3000);
+            }
+
+            // Function to extract the activation token from the URL
+            function getActivationToken() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('token');
+            }
+
+            // Function to verify the activation token via REST API
+            async function verifyActivationToken(activationToken) {
+                try {
+                    const response = await fetch(`https://<myAPI>/validateActivateToken?token=${activationToken}`);
+                    if (response.status === 200) {
+                        const data = await response.json();
+                        console.log(data)
+                        //If data contains a value named function -- indicative of true values
+                        if (data.function) {
+                            // Display a popup response for valid token
+                            showPopup(true);
+
+                            const qrData = {
+                                user_id: data.user_id,
+                                service: data.service,
+                                nonce: data.nonce,
+                                timestamp: data.nonce,
+                                function: data.function
+                            };
+
+                            var jsonString = JSON.stringify(qrData);
+                            jsonString = jsonString.padEnd(220);
+                            
+                            // Create a new QRCode instance and specify the target element
+                            const qrcode = new QRCode(document.getElementById('qrcode'), {
+                                text: jsonString,  // Data to be encoded
+                                width: 220,         // QR code width
+                                height: 220         // QR code height
+                            });
+
+                            $('#qrcode-container').fadeIn()
+
+                            setTimeout(function () {
+                                var qrLabel = document.getElementById("qrcode-label");
+                                qrLabel.textContent = "Once you get out keys navigate to login screen";
+                            }, 10000);
+
+
+                        } else {
+                            showPopup(false)
+                        }
+                    } else {
+                        // Handle non-200 status codes
+                        alert('Error verifying activation token');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert('An error occurred while verifying the activation token');
+                }
+            }
+
+            // Main function to start verification
+            const activationToken = getActivationToken();
+            if (activationToken) {
+                verifyActivationToken(activationToken);
+            } else {
+                alert('Activation token not found in the URL');
+            }
+        </script>
+    </div>
+</body>
+
+</html>

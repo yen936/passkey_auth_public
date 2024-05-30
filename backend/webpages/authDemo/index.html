@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+    <style>
+        * {
+            font-family: 'Open Sans';
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+            /* font-family: 'Open Sans', sans-serif; */
+        }
+
+        #box-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #888888;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            font-size: 22px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        #login-container {
+            display: flex;
+            color: #888888;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #login-container input {
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            width: 300px;
+            font-size: 16px;
+            background-color: #f5f5f5;
+            margin-right: 10px;
+        }
+
+        .input-container input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            background-color: #f5f5f5;
+            font-size: 16px;
+            color: #333333;
+        }
+
+        input::placeholder {
+            color: #888888;
+        }
+
+        #login-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #login-btn:hover {
+            background-color: #0062cc;
+        }
+
+        #qrcode-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            max-width: 220px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #qrcode-label {
+            font-size: 16px;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            text-align: center;
+            color: #888888;
+        }
+
+        #qrcode {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .powered-by-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+        }
+
+        #popup-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        }
+
+        #popup-container img {
+        width: 32px;
+        height: 32px;
+        }
+
+        #popup-container p {
+        margin-top: 10px;
+        }
+
+        .hide {
+        opacity: 0;
+        }
+    </style>
+
+
+<body>
+    <div id="box-container">
+        <div class="logo-container">
+            <img src="{{url_for('static', filename='https://myLogoURI.png')}}" alt="Cothura" />
+
+        </div>
+        <div id="login-container">
+            <input type="text" id="username" name="username" placeholder="Enter your username">
+            <button id="login-btn">Generate QR</button>
+        </div>
+        <div id="qrcode-container" style="display:none; margin: 0 auto; 
+            justify-content: center; align-items: center;">
+            <label id="qrcode-label">Scan to Login</label>
+            <div id="qrcode" style="margin: 0 auto; justify-content: center;"></div>
+        </div>
+
+        <div class="powered-by-container">
+            <p>Login powered by</p>
+            <img src="{{url_for('static', filename='https://mylogouri.png')}}" alt="Cothura" width="200" height="46" />
+        </div>
+    </div>
+
+    <div id="popup-container" style="visibility:hidden;" >
+        <svg id="success-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill=#81c784 class="bi bi-check-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+        </svg>
+
+        <svg id="failure-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill=#e57373 class="bi bi-x-circle-fill"
+            viewBox="0 0 16 16">
+            <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+        </svg>
+        <p id="popup-message"></p>
+    </div>
+
+
+    <script>
+        // var nonce = "{{ nonce }}"
+        var writeAuthEventAPIEndpoint = "https://myaws.endpoint/writeAuthEvent"
+        var getNonceApiEndpoint = 'https://myaws.endpoint/getNonce'
+        var getAuthResultEndpoint = 'https://myaws.endpoint/getAuthResult'
+        var globalNonce = ''
+
+        // Initialize the agent at application startup.
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+            .then(FingerprintJS => FingerprintJS.load())
+
+        // Get the visitor identifier when you need it.
+        fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+                // This is the visitor identifier:
+                const visitorId = result.visitorId
+                console.log(result)
+                console.log("fp.js vistorid: " + visitorId)
+            })
+
+
+        function fingerprintBrowser() {
+                var fingerprint = {};
+
+                // Get IP address using a third-party API
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        fingerprint.ip = data.ip;
+                        // Add more fields to the fingerprint object
+                        fingerprint.userAgent = navigator.userAgent;
+                        fingerprint.browserName = navigator.appName;
+                        fingerprint.browserVersion = navigator.appVersion;
+                        fingerprint.languages = navigator.languages;
+                        fingerprint.webdriver = navigator.webdriver;
+
+                        fingerprint.plugins = getPluginsInfo();
+                        fingerprint.screenResolution = getScreenResolution();
+                        fingerprint.timezone = getTimezone();
+                        fingerprint.platform = navigator.platform;
+                        fingerprint.doNotTrack = navigator.doNotTrack;
+                        fingerprint.cookiesEnabled = navigator.cookieEnabled;
+                        fingerprint.hardwareConcurrency = navigator.hardwareConcurrency;
+                        fingerprint.canvasFingerprint = getCanvasFingerprint();
+                        // ... Add more fields as needed
+
+                        // Format fingerprint object as JSON
+                        var fingerprintJSON = JSON.stringify(fingerprint);
+                        console.log(fingerprintJSON);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                function getPluginsInfo() {
+                    var plugins = [];
+                    for (var i = 0; i < navigator.plugins.length; i++) {
+                        plugins.push({
+                            name: navigator.plugins[i].name,
+                            description: navigator.plugins[i].description,
+                            filename: navigator.plugins[i].filename,
+                        });
+                    }
+                    return plugins;
+                }
+
+                function getScreenResolution() {
+                    return {
+                        width: screen.width,
+                        height: screen.height,
+                        colorDepth: screen.colorDepth,
+                    };
+                }
+
+                function getTimezone() {
+                    var timezoneOffset = new Date().getTimezoneOffset();
+                    return {
+                        offsetMinutes: timezoneOffset,
+                        name: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    };
+                }
+
+                function getConnectionInfo() {
+                    return {
+                        effectiveType: navigator.connection.effectiveType,
+                        downlink: navigator.connection.downlink,
+                        rtt: navigator.connection.rtt,
+                    };
+                }
+
+                function getGPUInfo() {
+                    var rendererInfo = {
+                        vendor: rendererInfo.vendor,
+                        renderer: rendererInfo.renderer,
+                    };
+                    return rendererInfo;
+                }
+
+                function getCanvasFingerprint() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const txt = 'BrowserCanvasFingerprint';
+                    ctx.textBaseline = 'top';
+                    ctx.font = '14px "Arial"';
+                    ctx.textBaseline = 'alphabetic';
+                    ctx.fillStyle = '#f60';
+                    ctx.fillRect(125, 1, 62, 20);
+                    ctx.fillStyle = '#069';
+                    ctx.fillText(txt, 2, 15);
+                    ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+                    ctx.fillText(txt, 4, 17);
+                    const b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
+                    const bin = atob(b64);
+                    return btoa(bin.slice(0, 16));
+                }
+            }
+
+        // Call the fingerprintBrowser function to collect browser information
+        var fingerprintJSON = fingerprintBrowser();
+
+       function showPopup(isSuccess) {
+            var popupContainer = document.getElementById("popup-container");
+            var failIcon = document.getElementById("failure-icon");
+            var successIcon = document.getElementById("success-icon");
+            var popupMessage = document.getElementById("popup-message");
+
+            // Set the icon and message based on success or failure
+            if (isSuccess) {
+                popupMessage.textContent = "Login Successful!";
+                failIcon.style.visibility = "hidden";
+                successIcon.style.visibility = "visible";
+            } else {
+                popupMessage.textContent = "Login Failed: Please try again.";
+                failIcon.style.visibility = "visible";
+                successIcon.style.visibility = "hidden";
+            }
+
+            // Show the popup
+            popupContainer.style.visibility = "visible";
+
+            // Set a timeout to hide the popup after 3 seconds
+            setTimeout(function () {
+                popupContainer.style.visibility = "hidden";
+                failIcon.style.visibility = "hidden";
+                successIcon.style.visibility = "hidden";
+                $('#qrcode-container').fadeOut();
+            }, 3000);
+        }
+
+        async function getNonce() {
+            try {
+                    const response = await fetch(getNonceApiEndpoint);
+                    const data = await response.json();
+                    return data.nonce;
+                } catch (error) {
+                    console.error('Error:', error);
+                    return null;
+                }
+            }
+
+        function sendNonce(jdata) {
+
+            // Send the username to the API endpoint
+            $.ajax({
+                url: writeAuthEventAPIEndpoint,
+                type: 'POST',
+                data: jdata,
+                dataType: "json",
+                success: function (response) {
+                    console.log("response", response)
+                
+                    // Redirect to the success page if the response is true
+                    if ('Success' in response) {
+                        console.log(response['Success'])
+                        //showPopup(true)
+
+                        // Await for reponse from server
+                        getAuthResult(globalNonce)
+
+                    } else if ('Error' in response) {
+                        console.log(response['Error'])
+                        //showPopup(false); 
+                    } else {
+                        //handle other case
+                    }
+                },
+                error: function () {
+                    console.log('Other Error')
+                    showPopup(false)
+                }
+            });
+
+
+        }
+        
+        async function getAuthResult(nonce) {
+
+            // Make GET request to API endpoint
+            fetch(`${getAuthResultEndpoint}?nonce=${nonce}`)
+            .then(response => {
+                // Check if the response is successful (status code 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Parse the JSON data from the response
+                return response.json();
+            })
+                .then(data => {
+                    // Handle the parsed JSON data here
+                    console.log(data); // Do whatever you want with the data
+                    if(data.auth_response === true) {
+                        // Redirect to the site in jsonData.redirect
+                        showPopup(true)
+                        // Set a timeout to hide the popup after 5 seconds
+                        window.location.href = data.redirect;
+                        
+                    } else {
+                        // Show a failure pop-up or take any other appropriate action
+                        showPopup(false)
+                    }
+
+                })
+                .catch(error => {
+                    showPopup(false)
+                    console.error('Fetch Error:', error);
+                });
+        
+        }
+
+        $(document).ready(function () {
+            $('#login-btn').on('click', function () {
+                // Get the username from the input field
+                var username = $('#username').val();
+                
+                (async () => {
+                    try {
+                        const nonce = await getNonce();
+                        return nonce;
+                    } catch (error) {
+                        console.error('Error:', error);
+                        return null;
+                    }
+                })()
+                    .then((nonce) => {
+                        globalNonce = nonce; // Assign the resolved nonce to the globalNonce variable
+                        var rawTimestamp = new Date();
+
+                        console.log(fingerprintJSON)
+
+                        // Create the data to encode in the QR code
+                        var data = { 
+                            'user_id': username,
+                            'nonce': globalNonce, 
+                            'service': 'example.com',
+                            'timestamp': rawTimestamp.toISOString(),
+                            'function': 'auth'
+                        };
+                        var jdata = JSON.stringify(data)
+
+                        sendNonce(jdata=jdata)
+
+                        // Generate the QR code
+                        const jsonString = JSON.stringify(data);
+
+                        // Create a new QRCode instance and specify the target element
+                        const qrcode = new QRCode(document.getElementById('qrcode'), {
+                            text: jsonString,  // Data to be encoded
+                            width: 220,         // QR code width
+                            height: 220         // QR code height
+                        });
+                        // new QRCode(document.getElementById('qrcode'), jdata);
+
+                        // Show the QR code
+                        $('#qrcode-container').fadeIn();
+
+
+                    });
+                
+            });
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
